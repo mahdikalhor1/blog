@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 
 def home_page(request):
-    pass
+    return render(request, 'my_syte/home_page.html')
 
 def posts(request):
     pass
