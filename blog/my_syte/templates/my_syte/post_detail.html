@@ -1,0 +1,22 @@
+{% extends 'base.html'%}
+{% load static%}
+{% block style%}
+    <link rel="stylesheet" href="{% static "my_syte/post-detail.css" %}">
+{%endblock%}
+{% block title%}{{post.title|upper}}{%endblock%}
+{% block content%}
+<section id="summary">
+    <h2>{{post.title}}</h2>
+    <article>
+        <img src= "{% static "my_syte/image/"|add:post.image %}" alt="{{post.title}}">
+        <address>{{post.author}}</address>
+        <div>Last updated on <time>{{post.date}}</time></div>
+    </article>
+</section>
+
+<main>
+    <p>
+        {{post.content|linebreaks}}
+    </p>
+</main>
+{%endblock%}

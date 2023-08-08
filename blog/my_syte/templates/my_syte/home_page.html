@@ -3,20 +3,13 @@
 {% load static %}
 {% block style%}
 <link rel="stylesheet" href="{% static "my_syte/index.css" %}"/>
+<link rel="stylesheet" href="{% static "my_syte/post.css" %}"/>
 
 {% endblock %}
 {% block title %}My syte{% endblock %}
 
 {% block content%}
 
-<header id = "main-navigation">
-    <h1>
-        <a href="{% url "home-page"%}">My Blog</a>
-        <h1>
-    <nav>
-        <a href="{% url "posts" %}">All posts</a>
-    </nav>
-</header>
 
 <section id="welcome">
     
@@ -32,18 +25,9 @@
     <h2>My Latest Thoughts</h2>
         
     <ul>
-        <li>
-            <article class="post" >
-                <a href="">
-                <img src="{% static "my_syte/image/mount.jpg" %}" alt="Mountain hiking"/>
-                <div class ="post__content">
-                <h3>Mountain Hiking<h3>
-                    <p>
-                        Hiking is a long distance walk along a specific trail, most commonly across country. Some hikes can be challenging and last for days including camping, but others can be a long day walk at a steady pace. However, mountain climbing is a challenging sport in which people climb steep rocky slopes to reach the top</p>
-                    </div>
-                </a>
-            </article>
-        </li>
+        {% for post in posts %}
+            {% include "my_syte/include/post.html"%}
+        {% endfor %}
     </ul>
 </section>
 
