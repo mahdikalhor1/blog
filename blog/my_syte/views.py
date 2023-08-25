@@ -27,6 +27,7 @@ class HomeView(TemplateView):
 class PostsView(ListView):
     template_name = 'my_syte/all_posts.html'
     model = Post
+    ordering = ['-date']
     context_object_name = 'posts'
 
 # def posts(request):
