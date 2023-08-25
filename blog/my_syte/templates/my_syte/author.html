@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<section id="author">
+    <h2>name : {{author.name}}
+    </h2>
+    
+    <h2>
+        email : {{author.email}}
+    </h2>
+</section>
+{%endblock%}
+{%block title%}
+{{author.name}}'s profile
+{%endblock%}
