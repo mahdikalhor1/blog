@@ -2,6 +2,8 @@ from django.db import models
 from django.core.validators import MinLengthValidator
 from blog.settings import BASE_DIR
 import os 
+from django.utils.text import slugify
+from django.urls import reverse
 
 class Author(models.Model):
     first_name = models.CharField(max_length=50)
@@ -14,6 +16,13 @@ class Author(models.Model):
     
     def __str__(self):
         return self.name()
+    
+    def slug(self):
+        return slugify(self.name())
+    
+    def get_absolute_url(self):
+        return reverse('author', kwargs={'slug' : self.slug()})
+    
 
 class Tag(models.Model):
     content = models.CharField(max_length=50)
@@ -23,7 +32,7 @@ class Tag(models.Model):
 
 class Post(models.Model):
     post_name = models.CharField(max_length=50)
-    image = models.FilePathField(max_length=100, path= str(BASE_DIR) + '/my_syte/static/my_syte/image')
+    image = models.ImageField(upload_to='images')
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     tag = models.ManyToManyField(Tag, blank=True)
     date = models.DateField(auto_now=True)
