@@ -3,6 +3,9 @@ from datetime import date
 from .models import Post, Author
 from django.views.generic import TemplateView, ListView
 from django.views.generic.detail import DetailView
+from .forms import CommentForm
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 def get_date(post):
     return post.date
@@ -38,6 +41,21 @@ class PostDetail(DetailView):
     template_name = 'my_syte/post_detail.html'
     model = Post
     context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CommentForm
+
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
+        
+        comment = form.save(commit=False)
+        comment.post = self.get_object()
+        comment.save()
+
+        return HttpResponseRedirect(reverse('post-ditails', args=[kwargs['slug']]))
 
 # def post_ditails(request, slug):
 #     post = get_object_or_404(Post, slug=slug)

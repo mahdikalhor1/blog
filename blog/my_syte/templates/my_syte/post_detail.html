@@ -27,4 +27,18 @@
         {{post.content|linebreaks}}
     </p>
 </main>
+
+
+<section id='comment'>
+    
+    <form action = '' method='POST'>
+        {% csrf_token %}
+        <label>Leave Comment</label>
+        {{form.username.label}}
+        {{form.username}}
+        {{form.content.label}}
+        {{form.content}}
+    <button type='submit'>Send</button>
+    </form>
+</section>
 {%endblock%}
