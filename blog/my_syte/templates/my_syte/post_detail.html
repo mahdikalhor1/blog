@@ -28,8 +28,24 @@
     </p>
 </main>
 
+<section id = 'comments'>
+    {% if show_comments == True %}
+    <ul>
+        {% for comment in comments%}
+            <li>{{comment}}</li>
+        {% endfor %}
+    <form action='show-comments'>
+        <button>hide comments</button>
+    </form>
+    <ul/>
+    {% else %}
+    <form action='show-comments'>
+        <button>show comments</button>
+    </form>
+    {% endif %}
+</section>
 
-<section id='comment'>
+<section id='comments'>
     
     <form action = '' method='POST'>
         {% csrf_token %}

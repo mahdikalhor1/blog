@@ -45,15 +45,19 @@ class PostDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = CommentForm
+        context['comments'] = self.get_object().comments.all()
+        context['show_comments'] = True
+        
 
         return context
     
     def post(self, request, *args, **kwargs):
         form = CommentForm(request.POST)
         
-        comment = form.save(commit=False)
-        comment.post = self.get_object()
-        comment.save()
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = self.get_object()
+            comment.save()
 
         return HttpResponseRedirect(reverse('post-ditails', args=[kwargs['slug']]))
 
@@ -86,3 +90,6 @@ class AuthorView(TemplateView):
 #             author = a
 
 #     return render(request, 'my_syte/author.html' ,{'author' : author})
+
+def show_comments(request):
+    pass
