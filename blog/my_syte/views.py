@@ -44,7 +44,10 @@ class PostDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = CommentForm
+        
+        form = CommentForm()
+
+        context['form'] = form
         context['comments'] = self.get_object().comments.all()
         context['show_comments'] = True
         

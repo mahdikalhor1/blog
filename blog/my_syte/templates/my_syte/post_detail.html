@@ -45,16 +45,15 @@
     {% endif %}
 </section>
 
-<section id='comments'>
+<section id='comment-form'>
     
     <form action = '' method='POST'>
         {% csrf_token %}
-        <label>Leave Comment</label>
-        {{form.username.label}}
-        {{form.username}}
-        {{form.content.label}}
-        {{form.content}}
-    <button type='submit'>Send</button>
+        <div id='form-control'>
+        <h2>Leave Comment</h2>
+        {{form}}
+        <button type='submit'>Send</button>
+        </div>
     </form>
 </section>
 {%endblock%}
