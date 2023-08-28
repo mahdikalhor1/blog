@@ -49,6 +49,7 @@ class PostDetail(View):
             'post' : post,
             'form' : form,
             'comments' : post.comments.all().order_by('-id'),
+            'is_read_later' : self.is_read_later(request, slug),
         }
         
 
@@ -63,16 +64,26 @@ class PostDetail(View):
             comment.post = post
             comment.save()
 
-            return HttpResponseRedirect(reverse('post-ditails', args=[slug]))
+            return HttpResponseRedirect(reverse('post-details', args=[slug]))
         
        
         context = {
             'post' : post,
             'form' : form,
             'comments' : post.comments.all().order_by('-id'),
+            'is_read_later' : self.is_read_later(request, slug),
         }
 
         return render(request, 'my_syte/post_detail.html', context)
+    
+
+    def is_read_later(self,request ,slug):
+        try:
+            read_later_list = request.session['read_later']
+            print(slug, read_later_list)
+            return slug in read_later_list
+        except:
+            return False
 
 # def post_ditails(request, slug):
 #     post = get_object_or_404(Post, slug=slug)
@@ -104,5 +115,14 @@ class AuthorView(TemplateView):
 
 #     return render(request, 'my_syte/author.html' ,{'author' : author})
 
-def show_comments(request):
-    pass
+
+def read_later(request, slug):
+
+    try:
+        request.session['read_later']
+    except KeyError:
+        request.session['read_later'] = []
+
+    request.session['read_later'].append(slug)
+
+    return HttpResponseRedirect(reverse('post-details', args=[slug]))

@@ -16,6 +16,8 @@
 {% endif%}
 <section id="summary">
 
+    
+
     <h2>{{post.title}}</h2>
 
     <div>
@@ -23,12 +25,21 @@
             <span class="tag" >{{tag}}</span>
         {% endfor %}
     </div>
+    {%if  is_read_later is False %}
+    <div id = 'read-later'>
+        <form action = '{% url "read-later" post.slug %}'>
+            <button type='submit'> Read later</button>
+        </form>
+    </div>
+    {% endif %}
     
     <article>
         <img src= "{{post.image.url}}" alt="{{post.title}}">
         <a href="{{post.author.get_absolute_url}}">{{post.author}}</a>
         <div>Last updated on <time>{{post.date}}</time></div>
     </article>
+
+
 </section>
 
 <main>
