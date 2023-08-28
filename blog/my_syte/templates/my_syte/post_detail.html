@@ -38,20 +38,13 @@
 </main>
 
 <section id = 'comments'>
-    {% if show_comments == True %}
-    <ul>
-        {% for comment in comments%}
-            <li>{{comment}}</li>
+    {% for comment in comments%}
+            <li>
+                <h2>{{comment.username}}</h2>
+                <p>{{comment.content|linebreaks}}</p>
+
+                </li>
         {% endfor %}
-    <form action='show-comments'>
-        <button>hide comments</button>
-    </form>
-    <ul/>
-    {% else %}
-    <form action='show-comments'>
-        <button>show comments</button>
-    </form>
-    {% endif %}
 </section>
 
 <section id='comment-form'>

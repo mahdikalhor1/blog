@@ -48,8 +48,7 @@ class PostDetail(View):
         context = {
             'post' : post,
             'form' : form,
-            'comments' : post.comments.all(),
-            'show_comments' : True,
+            'comments' : post.comments.all().order_by('-id'),
         }
         
 
@@ -57,20 +56,20 @@ class PostDetail(View):
     
     def post(self, request, slug):
         form = CommentForm(request.POST)
+        post = get_object_or_404(Post, slug=slug)
         
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.post = self.get_object()
+            comment.post = post
             comment.save()
 
-            return HttpResponseRedirect(reverse('post-ditails', args=slug))
+            return HttpResponseRedirect(reverse('post-ditails', args=[slug]))
         
-        post = get_object_or_404(Post, slug=slug)
+       
         context = {
             'post' : post,
             'form' : form,
-            'comments' : post.comments.all(),
-            'show_comments' : True,
+            'comments' : post.comments.all().order_by('-id'),
         }
 
         return render(request, 'my_syte/post_detail.html', context)
