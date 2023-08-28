@@ -5,6 +5,15 @@
 {%endblock%}
 {% block title%}{{post.title|upper}}{%endblock%}
 {% block content%}
+
+{% if form.errors %}
+    <div id = 'alert'>
+
+        <h2>Saving comment failed!</h2>
+        <h2>fix the invalid inputs</h2>
+        <a href = '#comment-form'>fix</a>
+    </div>
+{% endif%}
 <section id="summary">
 
     <h2>{{post.title}}</h2>
@@ -49,7 +58,7 @@
     
     <form action = '' method='POST'>
         {% csrf_token %}
-        <div id='form-control'>
+        <div id='form-control {%if form.errors %}invalid{% endif %}'>
         <h2>Leave Comment</h2>
         {{form}}
         <button type='submit'>Send</button>

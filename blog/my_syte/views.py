@@ -6,6 +6,7 @@ from django.views.generic.detail import DetailView
 from .forms import CommentForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.views import View
 
 def get_date(post):
     return post.date
@@ -37,24 +38,24 @@ class PostsView(ListView):
 #     all_posts = Post.objects.all()
 #     return render(request, 'my_syte/all_posts.html', {"posts" : all_posts})
 
-class PostDetail(DetailView):
-    template_name = 'my_syte/post_detail.html'
-    model = Post
-    context_object_name = 'post'
+class PostDetail(View):
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        
+    def get(self, request, slug):
+        post = get_object_or_404(Post, slug=slug)
+
         form = CommentForm()
 
-        context['form'] = form
-        context['comments'] = self.get_object().comments.all()
-        context['show_comments'] = True
+        context = {
+            'post' : post,
+            'form' : form,
+            'comments' : post.comments.all(),
+            'show_comments' : True,
+        }
         
 
-        return context
+        return render(request, 'my_syte/post_detail.html', context)
     
-    def post(self, request, *args, **kwargs):
+    def post(self, request, slug):
         form = CommentForm(request.POST)
         
         if form.is_valid():
@@ -62,7 +63,17 @@ class PostDetail(DetailView):
             comment.post = self.get_object()
             comment.save()
 
-        return HttpResponseRedirect(reverse('post-ditails', args=[kwargs['slug']]))
+            return HttpResponseRedirect(reverse('post-ditails', args=slug))
+        
+        post = get_object_or_404(Post, slug=slug)
+        context = {
+            'post' : post,
+            'form' : form,
+            'comments' : post.comments.all(),
+            'show_comments' : True,
+        }
+
+        return render(request, 'my_syte/post_detail.html', context)
 
 # def post_ditails(request, slug):
 #     post = get_object_or_404(Post, slug=slug)
