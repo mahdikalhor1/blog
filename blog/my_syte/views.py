@@ -126,3 +126,22 @@ def read_later(request, slug):
     request.session['read_later'].append(slug)
 
     return HttpResponseRedirect(reverse('post-details', args=[slug]))
+
+
+class Read_later(TemplateView):
+    template_name = 'my_syte/read_later.html'
+
+    def get_context_data(self, **kwargs):
+        
+        context = super().get_context_data(**kwargs)
+        
+        try:
+            read_later_slugs = self.request.session['read_later']
+            context['read_later_posts'] = []
+            
+            for slug in read_later_slugs:
+                
+                context['read_later_posts'].append(Post.objects.get(slug=slug))
+        except KeyError:
+            context['is_empty'] = True
+        return context

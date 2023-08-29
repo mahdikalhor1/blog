@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style%}
+<link rel="stylesheet" href="{% static "my_syte/all-posts.css" %}"/>
+<link rel="stylesheet" href="{% static "my_syte/post.css" %}"/>
+
+{% endblock %}
+
+{% block title %}Read later posts{% endblock %}
+
+{% block content%}
+
+
+<section id="all-posts">
+    {% if is_empty %}
+    <h2>There is no any read later post!</h2>
+    {%else%}
+    <h2>Read later posts</h2>
+        
+    <ul>
+        {% for post in read_later_posts%}
+            {% include 'my_syte/include/post.html'%}
+        {% endfor%}
+    </ul>
+    {%endif%}
+</section>
+
+{% endblock %}
