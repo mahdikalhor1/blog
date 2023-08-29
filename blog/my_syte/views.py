@@ -80,7 +80,7 @@ class PostDetail(View):
     def is_read_later(self,request ,slug):
         try:
             read_later_list = request.session['read_later']
-            print(slug, read_later_list)
+            
             return slug in read_later_list
         except:
             return False
@@ -118,14 +118,27 @@ class AuthorView(TemplateView):
 
 def read_later(request, slug):
 
+    
     try:
         request.session['read_later']
     except KeyError:
         request.session['read_later'] = []
 
-    request.session['read_later'].append(slug)
+    l = request.session['read_later']
+
+    if slug in request.session['read_later']:
+
+        l.remove(slug)
+        request.session['read_later'] = l
+
+    else:
+        l.append(slug)
+        request.session['read_later'] = l
+
+    
 
     return HttpResponseRedirect(reverse('post-details', args=[slug]))
+
 
 
 class Read_later(TemplateView):
@@ -137,6 +150,10 @@ class Read_later(TemplateView):
         
         try:
             read_later_slugs = self.request.session['read_later']
+
+            if len(read_later_slugs) == 0:
+                context['is_empty'] = True
+                
             context['read_later_posts'] = []
             
             for slug in read_later_slugs:
@@ -144,4 +161,6 @@ class Read_later(TemplateView):
                 context['read_later_posts'].append(Post.objects.get(slug=slug))
         except KeyError:
             context['is_empty'] = True
+
+        
         return context

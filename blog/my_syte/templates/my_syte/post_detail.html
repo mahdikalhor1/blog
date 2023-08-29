@@ -25,13 +25,15 @@
             <span class="tag" >{{tag}}</span>
         {% endfor %}
     </div>
-    {%if  is_read_later is False %}
+    
     <div id = 'read-later'>
         <form action = '{% url "read-later" post.slug %}'>
-            <button type='submit'> Read later</button>
+            <button type='submit'>
+                {%if  is_read_later %}Remove from read later list
+                {% else %}Read later {% endif %} </button>
         </form>
     </div>
-    {% endif %}
+    
     
     <article>
         <img src= "{{post.image.url}}" alt="{{post.title}}">
